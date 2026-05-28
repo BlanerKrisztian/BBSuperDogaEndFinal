@@ -16,7 +16,7 @@ namespace LibraryApp
         {
             if (name.Trim() == "" || name is null || name == "" || name.Trim() is null)
             {
-                throw new ArgumentException("Name Canno be empty.", "name");
+                throw new ArgumentException("Name Cannot be empty.", "name");
             }
             _name = name;
         }
@@ -47,43 +47,112 @@ namespace LibraryApp
         // Visszatér false-al ha nincs elérhető példány a megadott címből
         public bool BorrowBook(string title)
         {
-            throw new NotImplementedException();
+            if (title is null || title.Trim() is "" || title.Trim() is null || title is "")
+            {
+                throw new ArgumentException("Title cannot be empty or whitespace.", nameof(title));
+            }
+            foreach (string book in _availableBooks)
+            {
+                if (book == title)
+                {
+                    _availableBooks.Remove(book);
+                    _borrowedBooks.Add(book);
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Visszatér false-al ha nincs kikölcsönzött példány a megadott címből
         public bool ReturnBook(string title)
         {
-            throw new NotImplementedException();
+            if (title is null || title.Trim() is "" || title.Trim() is null || title is "")
+            {
+                throw new ArgumentException("Title cannot be empty or whitespace.", nameof(title));
+            }
+            foreach (string book in _borrowedBooks)
+            {
+                if (book == title)
+                {
+                    _availableBooks.Add(book);
+                    _borrowedBooks.Remove(book);
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Az _availableBooks listában szereplő példányok számát adja vissza — -1 ha a cím nem szerepel
         public int GetAvailableCopies(string title)
         {
-            throw new NotImplementedException();
-        }
+            int count = 0;
+            if (title is null || title.Trim() is "" || title.Trim() is null || title is "")
+            {
+                throw new ArgumentException("Title cannot be empty or whitespace.", nameof(title));
+            }
+            foreach (string book in _availableBooks)
+            {
+                if (book == title)
+                {
+                    count                                                           ++;
+                }
+            }
+            return count;
+            }
 
         // Visszatér true-val ha legalább egy szabad példány elérhető
         public bool IsAvailable(string title)
         {
-            throw new NotImplementedException();
+            int count = 0;
+            if (title is null || title.Trim() is "" || title.Trim() is null || title is "")
+            {
+                throw new ArgumentException("Title cannot be empty or whitespace.", nameof(title));
+            }
+            foreach (string book in _availableBooks)
+            {
+                if (book == title)
+                {
+                    count++;
+                }
+            }
+            return count > 0;
         }
+        
 
         // Az összes egyedi cím száma (elérhető és kikölcsönzött együtt)
         public int GetTotalTitles()
         {
-            throw new NotImplementedException();
+            List<string> unique = new();
+            unique.AddRange(_availableBooks);
+            unique.AddRange(_borrowedBooks);
+            unique.ToDictionary(b => b, b=>b);
+            int result = unique.Count;
+            return result;
         }
 
         // Az összes jelenleg kikölcsönzött példány száma
         public int GetTotalBorrowed()
         {
-            throw new NotImplementedException();
+            return _borrowedBooks.Count();
         }
 
         // Eltávolít minden példányt — visszatér false ha a cím nem létezik
         public bool RemoveBook(string title)
         {
-            throw new NotImplementedException();
+            bool successStatus = false;
+            if (title is null || title.Trim() is "" || title.Trim() is null || title is "")
+            {
+                throw new ArgumentException("Title cannot be empty or whitespace.", nameof(title));
+            }
+            foreach (string book in _availableBooks)
+            {
+                if (book == title)
+                {
+                    _availableBooks.Remove(book);
+                    successStatus = true;
+                }
+            }
+            return successStatus;
         }
     }
 }
