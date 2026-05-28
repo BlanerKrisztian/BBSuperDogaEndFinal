@@ -14,19 +14,34 @@ namespace LibraryApp
         // name nem lehet null vagy üres
         public Library(string name)
         {
-            throw new NotImplementedException();
+            if (name.Trim() == "" || name is null || name == "" || name.Trim() is null)
+            {
+                throw new ArgumentException("Name Canno be empty.", "name");
+            }
+            _name = name;
         }
 
         public string GetName()
         {
-            throw new NotImplementedException();
+            return _name;
         }
 
         // Minden példány egy külön bejegyzés — AddBook("Dune", 3) -> három "Dune" kerül a listába
         // copies >= 1
         public void AddBook(string title, int copies)
         {
-            throw new NotImplementedException();
+            if (title is null || title.Trim() is "" || title.Trim() is null || title is "")
+            {
+                throw new ArgumentException("Title cannot be empty or whitespace.", nameof(title));
+            }
+            if (copies <= 0)
+            {
+                throw new ArgumentException("Cannot add 0 or fewer copies.", nameof(copies));
+            }
+            for (int i = 0; i < copies; i++)
+            {
+                _availableBooks.Add(title);
+            }
         }
 
         // Visszatér false-al ha nincs elérhető példány a megadott címből
